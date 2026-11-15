@@ -35,6 +35,7 @@ jobs:
         run: |
           rm starter.trigger starter.part.*.b64
           rm -f .github/workflows/import-starter.yml
+          rm -f .github/workflows/tests.yml
       - name: Commit and push project files
         run: |
           git config user.name "github-actions[bot]"
