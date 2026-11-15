@@ -101,7 +101,7 @@ cd knime-vs-python-ml-guide
 python -m venv .venv
 
 # Windows PowerShell
-.venv\\Scripts\\Activate.ps1
+.venv\Scripts\Activate.ps1
 
 # macOS / Linux
 source .venv/bin/activate
@@ -155,7 +155,7 @@ The current guide uses the KNIME Base Nodes and KNIME Ensemble Learning Wrappers
 
 ## Publishing and project roadmap
 
-See [PUBLISHING.md](PUBLISHING.md) for Git setup and [ROADMAP.md](ROADMAP.md) for planned learning modules.
+See [PUBLISHING.md](PUBLISHING.md) for the initial public-repository setup and [ROADMAP.md](ROADMAP.md) for planned learning modules.
 
 ## Contributing
 
