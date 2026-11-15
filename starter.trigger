@@ -1,1 +1,1 @@
-Start one-time import of the KNIME + Python educational starter project.
+Start one-time import of the KNIME + Python educational starter project (retry after workflow permission adjustment).
