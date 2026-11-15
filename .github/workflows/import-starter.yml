@@ -3,7 +3,7 @@ name: Import starter project files
 on:
   push:
     paths:
-      - "starter.tar.xz.b64"
+      - "starter.trigger"
   workflow_dispatch:
 
 permissions:
@@ -24,8 +24,8 @@ jobs:
           python-version: "3.12"
       - name: Decode and extract starter project
         run: |
-          test -s starter.tar.xz.b64
-          base64 --decode starter.tar.xz.b64 | tar -xJ --strip-components=1
+          test -s starter.trigger
+          cat starter.part.*.b64 | base64 --decode | tar -xJ --strip-components=1
       - name: Generate the shared CSV dataset
         run: |
           python -m pip install --upgrade pip
@@ -33,7 +33,7 @@ jobs:
           python data/generate_dataset.py
       - name: Remove the one-time bootstrap files
         run: |
-          rm starter.tar.xz.b64
+          rm starter.trigger starter.part.*.b64
           rm -f .github/workflows/import-starter.yml
       - name: Commit and push project files
         run: |
