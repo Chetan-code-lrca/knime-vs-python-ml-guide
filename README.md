@@ -1,5 +1,9 @@
 # KNIME + Python: A Practical Guide to Data Science & Machine Learning
 
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+[![Tests](https://github.com/Chetan-code-lrca/knime-vs-python-ml-guide/actions/workflows/tests.yml/badge.svg)](https://github.com/Chetan-code-lrca/knime-vs-python-ml-guide/actions/workflows/tests.yml)
+
 > Learn what KNIME does, what Python does, where they overlap, and how to choose the right tool by solving the same problem in both.
 
 **Audience:** students, beginners, analysts, aspiring data scientists, and anyone wondering whether visual low-code tools make programming unnecessary.
@@ -19,6 +23,50 @@ KNIME and Python are not two equivalent programming languages competing to do th
 KNIME can handle many complete data-preparation and traditional ML workflows without requiring you to write much code. Python provides more direct control and a broad ecosystem for custom logic, experimentation, software integration, and production applications. KNIME can also integrate Python, so the two can be used together.
 
 **The lesson is not “KNIME or Python?” It is “which tool fits this part of the job?”**
+
+## Visual overview
+
+The same machine-learning problem can be approached with two different interfaces. What matters is that both implementations follow sound data-science principles and are evaluated fairly.
+
+```mermaid
+flowchart TB
+    A[Define the problem] --> B[Understand and inspect data]
+    B --> C[Choose a valid train/test strategy]
+    C --> D[Prepare features and target]
+    D --> E{Choose implementation}
+    E --> F[KNIME visual workflow]
+    E --> G[Python code and libraries]
+    F --> H[Train and evaluate]
+    G --> H
+    H --> I[Compare results and assumptions]
+    I --> J[Document, deploy, and monitor]
+```
+
+### How to choose a tool
+
+```mermaid
+flowchart TD
+    A[Start with the task] --> B{Mostly standard data preparation and ML?}
+    B -->|Yes| C{Would a visual, inspectable workflow help?}
+    C -->|Yes| D[Use KNIME]
+    C -->|No| E[Use Python or SQL]
+    B -->|No| F{Need custom logic, research code, APIs, or deep learning?}
+    F -->|Yes| G[Use Python]
+    F -->|No| H{Need database querying and transformation?}
+    H -->|Yes| I[Use SQL, possibly with KNIME/Python]
+    H -->|No| J[Evaluate the tool that best fits the constraints]
+    D --> K{Need code beyond available nodes?}
+    K -->|Yes| L[Combine KNIME with Python]
+    K -->|No| M[Keep the KNIME workflow]
+    E --> N[Validate, test, and document]
+    G --> N
+    I --> N
+    J --> N
+    L --> N
+    M --> N
+```
+
+This is a starting guide, not a rigid rule. Team skills, governance, data size, deployment, maintenance, cost, and existing infrastructure can change the decision.
 
 ## What you will learn
 
@@ -49,6 +97,61 @@ By working through this repository, you will learn to:
 | 11 | [ML task types](docs/ml-task-types.md) | Regression, classification, clustering, forecasting |
 | 12 | [Data leakage guide](docs/data-leakage.md) | Why preprocessing must be learned from training data only |
 | 13 | [Glossary](docs/glossary.md) | Plain-language definitions of key terms |
+| 14 | [Visual workflow gallery](docs/visual-workflows.md) | KNIME flowcharts from practical data-preparation and ML examples |
+
+## Visual workflow examples
+
+These diagrams are redrawn from selected KNIME practice-lab outputs supplied with the project work. They are separate examples—not the synthetic inventory-demand case study below.
+
+### Data cleaning and exploration
+
+```mermaid
+flowchart LR
+    A[CSV Reader] --> B[Missing Value]
+    B --> C[Duplicate Row Filter]
+    C --> D[Column Filter]
+    D --> E[Linear Correlation]
+    E --> F[Heatmap]
+    D --> G[Scatter Plot]
+```
+
+A prepared table can branch into multiple analyses. This is useful when you want to reuse the same cleaned data for different visualizations or statistical checks.
+
+### Classification with a decision tree
+
+```mermaid
+flowchart LR
+    A[CSV Reader] --> B[Category to Number]
+    B --> C[Number to String]
+    C --> D[Table Partitioner]
+    D -->|Training rows| E[Decision Tree Learner]
+    D -->|Test rows| F[Decision Tree Predictor]
+    E --> F
+    F --> G[Scorer]
+```
+
+The partitioner separates training and test rows. The learner fits a model using training data; the predictor applies that fitted model to test data; the scorer evaluates predictions.
+
+### Compare regression models
+
+```mermaid
+flowchart TD
+    A[CSV Reader] --> B[Missing Value]
+    B --> C[Column Filter]
+    C --> D[Table Partitioner]
+    D -->|Training rows| E1[Linear Regression Learner]
+    D -->|Test rows| P1[Regression Predictor]
+    E1 --> P1
+    P1 --> S1[Numeric Scorer]
+    P1 --> V1[Scatter Plot]
+    D -->|Training rows| E2[Random Forest Regression Learner]
+    D -->|Test rows| P2[Random Forest Regression Predictor]
+    E2 --> P2
+    P2 --> S2[Numeric Scorer]
+    P2 --> V2[Scatter Plot]
+```
+
+Using the same partition for both models makes the comparison more meaningful. See the [full visual workflow gallery](docs/visual-workflows.md) for notes on each diagram.
 
 ## The shared case study
 
@@ -145,7 +248,7 @@ The current guide uses the KNIME Base Nodes and KNIME Ensemble Learning Wrappers
 ```text
 .
 ├── data/                  # Synthetic CSV, generator, and data dictionary
-├── docs/                  # Beginner lessons and decision guides
+├── docs/                  # Beginner lessons, decision guides, and visual flowcharts
 ├── knime/                 # KNIME workflow build-along and node mapping
 ├── python/                # Python script, notebook, dependencies
 ├── tests/                 # Dataset and training smoke tests
@@ -155,11 +258,11 @@ The current guide uses the KNIME Base Nodes and KNIME Ensemble Learning Wrappers
 
 ## Publishing and project roadmap
 
-See [PUBLISHING.md](PUBLISHING.md) for the initial public-repository setup and [ROADMAP.md](ROADMAP.md) for planned learning modules.
+See [`PUBLISHING.md`](PUBLISHING.md) for the initial public-repository setup and [`ROADMAP.md`](ROADMAP.md) for planned learning modules.
 
 ## Contributing
 
-Beginners are welcome. You do not need to be an expert to improve a beginner guide. Start with [CONTRIBUTING.md](CONTRIBUTING.md), open an issue for unclear steps, or submit a small correction with a reproducible example.
+Beginners are welcome. You do not need to be an expert to improve a beginner guide. Start with [`CONTRIBUTING.md`](CONTRIBUTING.md), open an issue for unclear steps, or submit a small correction with a reproducible example.
 
 ## Sources and further learning
 
