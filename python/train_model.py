@@ -35,8 +35,25 @@ def load_data(path: Path = DATA_PATH) -> pd.DataFrame:
         raise ValueError(f"Dataset is missing required columns: {sorted(missing)}")
     if frame[TARGET].isna().any():
         raise ValueError(f"Target column {TARGET!r} must not contain missing values.")
-    if set(frame[SPLIT_COLUMN].dropna().unique()) != {"train", "test"}:
+
+    if frame[SPLIT_COLUMN].isna().any():
+        raise ValueError(f"Split column {SPLIT_COLUMN!r} must not contain missing values.")
+    if set(frame[SPLIT_COLUMN].unique()) != {"train", "test"}:
         raise ValueError("The split column must contain both 'train' and 'test'.")
+
+    # This teaching dataset is a forecasting task: when a week index is present,
+    # the test period must start strictly after the final training week.
+    if "week_index" in frame.columns:
+        week_index = pd.to_numeric(frame["week_index"], errors="coerce")
+        if week_index.isna().any() or not np.isfinite(week_index.to_numpy(dtype=float)).all():
+            raise ValueError("The week_index column must contain finite numeric values.")
+        train_max = week_index.loc[frame[SPLIT_COLUMN] == "train"].max()
+        test_min = week_index.loc[frame[SPLIT_COLUMN] == "test"].min()
+        if train_max >= test_min:
+            raise ValueError(
+                "Train and test splits must be chronologically separated: "
+                "the maximum training week_index must be less than the minimum test week_index."
+            )
     return frame
 
 
